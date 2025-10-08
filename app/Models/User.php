@@ -11,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use App\Filament\Admin\Resources\Users\UserResource;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable implements HasAvatar
 {
@@ -57,6 +58,14 @@ class User extends Authenticatable implements HasAvatar
             'password' => 'hashed',
             'status' => UserStatus::class,
         ];
+    }
+
+    /**
+     * Sites the user is associated with.
+     */
+    public function sites(): BelongsToMany
+    {
+        return $this->belongsToMany(Site::class)->withTimestamps();
     }
 
     public function sendUpdatedPasswordNotification(string $password)
